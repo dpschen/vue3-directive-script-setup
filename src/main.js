@@ -6,9 +6,13 @@ const app = createApp(App);
 
 const { createSetup, useDirectiveHooks } = createDirectiveScope();
 
+// adding custom directive while using the createSetup function
 app.directive(
   'test',
   createSetup((...args) => {
+    // original vue hooks won't work
+    // but these will
+    // it's possible to rename them on import
     const {
       onBeforeMount,
       onMounted,
@@ -20,6 +24,7 @@ app.directive(
 
     console.log('setup', JSON.parse(JSON.stringify(args)));
 
+    // all hooks
     console.log('setup aka created');
     onBeforeMount(() => console.log('beforeMount'));
     onMounted(() => console.log('mounted'));

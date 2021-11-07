@@ -1,25 +1,31 @@
 <script setup>
 import { ref } from 'vue';
 
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue';
+import ComponentWithDirective from './ComponentWithDirective.vue';
 
-const hasMessage = ref(true);
-function toggleBla() {
-  hasMessage.value = !hasMessage.value;
+const hasComponent = ref(true);
+function toggleComponent() {
+  hasComponent.value = !hasComponent.value;
 }
 
-const showMessage = ref(true);
+const showComponent = ref(true);
 
-function toggleBlaShow() {
-  showMessage.value = !showMessage.value;
+function toggleComponentVisibility() {
+  showComponent.value = !showComponent.value;
 }
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <button type="button" @click="toggleComponentVisibility()">
+    {{ hasComponent ? 'Remove' : 'Add' }}
+  </button>
+
+  <button type="button" @click="toggleComponent()">
+    {{ showComponent ? 'Hide' : 'Show' }}
+  </button>
+  <button type="button"></button>
+
+  <ComponentWithDirective />
 </template>
 
 <style>

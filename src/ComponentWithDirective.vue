@@ -14,13 +14,12 @@ defineProps({
 });
 
 const hasMessage = ref(true);
-function toggleBla() {
+function toggleVIf() {
   hasMessage.value = !hasMessage.value;
 }
 
 const showMessage = ref(true);
-
-function toggleBlaShow() {
+function toggleVShow() {
   showMessage.value = !showMessage.value;
 }
 
@@ -33,8 +32,8 @@ onUnmounted(() => console.log('composition', 'onUnmounted'));
 </script>
 
 <template>
-  <button type="button" @click="toggleBla">Toggle v-if</button>
-  <button type="button" @click="toggleBlaShow">Toggle v-show</button>
+  <button type="button" @click="toggleVIf">Toggle v-if</button>
+  <button type="button" @click="toggleVShow">Toggle v-show</button>
 
   <h1 v-if="hasMessage" v-show="showMessage" v-test="'bla'">{{ msg }}</h1>
 </template>
