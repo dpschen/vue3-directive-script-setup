@@ -4,7 +4,7 @@ import ComponentWithDirective from './components/ComponentWithDirective.vue';
 </script>
 
 <template>
-  <h1>Vue 3 – directive with script setup (forked)</h1>
+  <h1>Vue 3 – directive with script setup</h1>
 
   <ComponentControl
     title="Control component that has directive inside"
