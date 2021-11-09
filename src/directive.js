@@ -9,6 +9,8 @@ const DEFAULT_BINDING = {
   dir: undefined,
 };
 
+const getDefaultBinding = () => DEFAULT_BINDING;
+
 const DEFAULT_HOOK_FNS = {
   beforeMount: [],
   mounted: [],
@@ -18,15 +20,15 @@ const DEFAULT_HOOK_FNS = {
   unmounted: [],
 };
 
+const getDefaultHookFns = () => DEFAULT_HOOK_FNS;
+
 export function createDirectiveScope() {
   let scope = null;
 
   const el = ref(null);
-  const binding = shallowReactive(Object.assign({}, DEFAULT_BINDING));
+  const binding = shallowReactive(getDefaultBinding());
   const vnode = shallowRef(null);
   const prevVnode = shallowRef(null);
-
-  const getDefaultHookFns = () => Object.assign({}, DEFAULT_HOOK_FNS);
 
   const hookFns = getDefaultHookFns();
 
@@ -94,7 +96,7 @@ export function createDirectiveScope() {
     scope = null;
 
     // reset hookFns
-    Object.assign(hookFns, getDefaultHookFns());
+    hookFns = getDefaultHookFns();
     console.log('getDefaultHookFns:');
     console.log(getDefaultHookFns());
   }
