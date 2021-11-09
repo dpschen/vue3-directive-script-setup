@@ -1,6 +1,5 @@
 <script setup>
 import {
-  ref,
   onBeforeMount,
   onMounted,
   onBeforeUpdate,
@@ -9,37 +8,33 @@ import {
   onUnmounted,
 } from 'vue';
 
-defineProps({
-  msg: String,
-});
+import ComponentControl from './ComponentControl.vue';
 
-const hasMessage = ref(true);
-function toggleVIf() {
-  hasMessage.value = !hasMessage.value;
-}
-
-const showMessage = ref(true);
-function toggleVShow() {
-  showMessage.value = !showMessage.value;
-}
-
-onBeforeMount(() => console.log('composition', 'onBeforeMount'));
-onMounted(() => console.log('composition', 'onMounted'));
-onBeforeUpdate(() => console.log('composition', 'onBeforeUpdate'));
-onUpdated(() => console.log('composition', 'onUpdated'));
-onBeforeUnmount(() => console.log('composition', 'onBeforeUnmount'));
-onUnmounted(() => console.log('composition', 'onUnmounted'));
+// watch the hooks from this component
+onBeforeMount(() => console.log('from component', 'onBeforeMount'));
+onMounted(() => console.log('from component', 'onMounted'));
+onBeforeUpdate(() => console.log('from component', 'onBeforeUpdate'));
+onUpdated(() => console.log('from component', 'onUpdated'));
+onBeforeUnmount(() => console.log('from component', 'onBeforeUnmount'));
+onUnmounted(() => console.log('from component', 'onUnmounted'));
 </script>
 
 <template>
-  <button type="button" @click="toggleVIf">Toggle v-if</button>
-  <button type="button" @click="toggleVShow">Toggle v-show</button>
-
-  <h1 v-if="hasMessage" v-show="showMessage" v-test="'bla'">{{ msg }}</h1>
+  <ComponentControl
+    class="directive-component"
+    title="Control component with directive in mounted node"
+    #default="{ mount, show }"
+  >
+    <!-- this paragraph node uses the v-test directive -->
+    <p v-if="mount" v-show="show" v-test="'bla'">
+      This element has a directive
+    </p>
+  </ComponentControl>
 </template>
 
 <style scoped>
-a {
-  color: #42b983;
+.directive-component {
+  padding: 1rem;
+  background-color: #f2f2f2;
 }
 </style>

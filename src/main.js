@@ -10,9 +10,9 @@ const { createSetup, useDirectiveHooks } = createDirectiveScope();
 app.directive(
   'test',
   createSetup((...args) => {
-    // original vue hooks won't work
-    // but these will
-    // it's possible to rename them on import
+    // normal vue component hooks won't work, but these will
+    // you might need to rename them on import if you use
+    // the vue component hooks in the same file
     const {
       onBeforeMount,
       onMounted,
@@ -24,7 +24,7 @@ app.directive(
 
     console.log('setup', JSON.parse(JSON.stringify(args)));
 
-    // all hooks
+    // watch all hooks of the directive
     console.log('setup aka created');
     onBeforeMount(() => console.log('beforeMount'));
     onMounted(() => console.log('mounted'));
@@ -33,7 +33,7 @@ app.directive(
     onBeforeUnmount(() => console.log('beforeUnmount'));
     onUnmounted(() => console.log('unmounted'));
 
-    // you can log a second time
+    // you can use the hooks as often as you want
     onMounted(() => console.log('mounted2'));
     onBeforeMount(() => console.log('beforeMount2'));
 
@@ -46,7 +46,7 @@ app.directive(
     watchEffect(() => console.log(foo.value));
 
     // should be undfined
-    onUnmounted(() => console.log(foo.value));
+    onUnmounted(() => console.log("Logging foo on 'unmounted'", foo.value));
   })
 );
 

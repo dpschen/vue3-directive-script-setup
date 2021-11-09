@@ -1,30 +1,32 @@
 import { effectScope, ref, shallowRef, shallowReactive } from 'vue';
 
-export function createDirectiveScope() {
-  console.log('createDirectiveScope');
+const DEFAULT_BINDING = {
+  instance: null,
+  value: undefined,
+  oldValue: undefined,
+  arg: undefined,
+  modifiers: undefined,
+  dir: undefined,
+};
 
+const DEFAULT_HOOK_FNS = {
+  beforeMount: [],
+  mounted: [],
+  beforeUpdate: [],
+  updated: [],
+  beforeUnmount: [],
+  unmounted: [],
+};
+
+export function createDirectiveScope() {
   let scope = null;
 
   const el = ref(null);
-  const binding = shallowReactive({
-    instance: null,
-    value: undefined,
-    oldValue: undefined,
-    arg: undefined,
-    modifiers: undefined,
-    dir: undefined,
-  });
+  const binding = shallowReactive({ ...DEFAULT_BINDING });
   const vnode = shallowRef(null);
   const prevNode = shallowRef(null);
 
-  const getDefaultHookFns = () => ({
-    beforeMount: [],
-    mounted: [],
-    beforeUpdate: [],
-    updated: [],
-    beforeUnmount: [],
-    unmounted: [],
-  });
+  const getDefaultHookFns = () => ({ ...DEFAULT_HOOK_FNS });
 
   const hookFns = getDefaultHookFns();
 
@@ -42,16 +44,15 @@ export function createDirectiveScope() {
   function createHook(hook) {
     return (...args) => {
       scope.run(() => {
-        const hookArgs = [];
-
         el.value = args[0];
         Object.assign(binding, args[1] || {});
         vnode.value = args[2];
         prevNode.value = args[3];
 
-        console.log(hook, 'vnode', vnode.value);
-        console.log(hook, 'prevNode', prevNode.value);
+        // console.log(hook, 'vnode', vnode.value);
+        // console.log(hook, 'prevNode', prevNode.value);
 
+        const hookArgs = [];
         vnode.value && hookArgs.push(vnode);
         prevNode.value && hookArgs.push(prevNode);
 
@@ -67,11 +68,10 @@ export function createDirectiveScope() {
       vnode.value = args[2];
       prevNode.value = args[3];
 
-      console.log('created', 'vnode', vnode.value);
-      console.log('created', 'prevNode', prevNode.value);
+      // console.log('created', 'vnode', vnode.value);
+      // console.log('created', 'prevNode', prevNode.value);
 
       scope = effectScope();
-      // scope.run(() => setupFn(...args));
       scope.run(() =>
         setupFn(el, binding, vnode, prevNode, {
           onBeforeMount: onBeforeDirectiveMount,
@@ -91,8 +91,8 @@ export function createDirectiveScope() {
     vnode.value = args[2];
     prevNode.value = args[3];
 
-    console.log('unmounted', 'vnode', vnode.value);
-    console.log('unmounted', 'prevNode', prevNode.value);
+    // console.log('unmounted', 'vnode', vnode.value);
+    // console.log('unmounted', 'prevNode', prevNode.value);
 
     createHook('unmounted')();
 
@@ -100,6 +100,7 @@ export function createDirectiveScope() {
     scope.stop();
     scope = null;
 
+    // reset hookFns
     Object.assign(hookFns, getDefaultHookFns());
   }
 
