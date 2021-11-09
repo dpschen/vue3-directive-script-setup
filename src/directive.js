@@ -41,20 +41,24 @@ export function createDirectiveScope() {
   const onBeforeDirectiveUnmount = pushHookFns('beforeUnmount');
   const onDirectiveUnmounted = pushHookFns('unmounted');
 
+  function assignArgs(args) {
+    el.value = args[0];
+    Object.assign(binding, args[1] || {});
+    vnode.value = args[2];
+    prevVnode.value = args[3];
+  }
+
   function createHook(hook) {
     return (...args) => {
       scope.run(() => {
-        el.value = args[0];
-        Object.assign(binding, args[1] || {});
-        vnode.value = args[2];
-        prevVnode.value = args[3];
+        assignArgs(args);
 
         // console.log(hook, 'vnode', vnode.value);
         // console.log(hook, 'prevVnode', prevVnode.value);
 
         const hookArgs = [];
-        vnode.value && hookArgs.push(vnode);
-        prevVnode.value && hookArgs.push(prevVnode);
+        vnode.value && hookArgs.push(vnode.value);
+        prevVnode.value && hookArgs.push(prevVnode.value);
 
         hookFns[hook].forEach((fn) => fn(...hookArgs));
       });
@@ -63,10 +67,7 @@ export function createDirectiveScope() {
 
   function createCreatedHook(setupFn) {
     return (...args) => {
-      el.value = args[0];
-      Object.assign(binding, args[1]);
-      vnode.value = args[2];
-      prevVnode.value = args[3];
+      assignArgs(args);
 
       // console.log('created', 'vnode', vnode.value);
       // console.log('created', 'prevVnode', prevVnode.value);
@@ -85,16 +86,8 @@ export function createDirectiveScope() {
     };
   }
 
-  function unmounted(...args) {
-    el.value = args[0];
-    Object.assign(binding, args[1] || {});
-    vnode.value = args[2];
-    prevVnode.value = args[3];
-
-    // console.log('unmounted', 'vnode', vnode.value);
-    // console.log('unmounted', 'prevVnode', prevVnode.value);
-
-    createHook('unmounted')();
+  function createUnmountedHook(...args) {
+    createHook('unmounted')(...args);
 
     // to dispose all effects in the scope
     scope.stop();
@@ -112,7 +105,7 @@ export function createDirectiveScope() {
       beforeUpdate: createHook('beforeUpdate'),
       updated: createHook('updated'),
       beforeUnmount: createHook('beforeUnmount'),
-      unmounted,
+      unmounted: createUnmountedHook,
     };
   }
 
