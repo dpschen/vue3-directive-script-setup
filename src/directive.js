@@ -95,6 +95,8 @@ export function createDirectiveScope() {
 
     // reset hookFns
     Object.assign(hookFns, getDefaultHookFns());
+    console.log('getDefaultHookFns:');
+    console.log(getDefaultHookFns());
   }
 
   function createSetup(setupFn) {
