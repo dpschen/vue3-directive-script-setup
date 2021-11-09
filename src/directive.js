@@ -22,11 +22,11 @@ export function createDirectiveScope() {
   let scope = null;
 
   const el = ref(null);
-  const binding = shallowReactive({ ...DEFAULT_BINDING });
+  const binding = shallowReactive(Object.assign({}, DEFAULT_BINDING));
   const vnode = shallowRef(null);
   const prevVnode = shallowRef(null);
 
-  const getDefaultHookFns = () => ({ ...DEFAULT_HOOK_FNS });
+  const getDefaultHookFns = () => Object.assign({}, DEFAULT_HOOK_FNS);
 
   const hookFns = getDefaultHookFns();
 
