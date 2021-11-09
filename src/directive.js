@@ -24,7 +24,7 @@ export function createDirectiveScope() {
   const el = ref(null);
   const binding = shallowReactive({ ...DEFAULT_BINDING });
   const vnode = shallowRef(null);
-  const prevNode = shallowRef(null);
+  const prevVnode = shallowRef(null);
 
   const getDefaultHookFns = () => ({ ...DEFAULT_HOOK_FNS });
 
@@ -47,14 +47,14 @@ export function createDirectiveScope() {
         el.value = args[0];
         Object.assign(binding, args[1] || {});
         vnode.value = args[2];
-        prevNode.value = args[3];
+        prevVnode.value = args[3];
 
         // console.log(hook, 'vnode', vnode.value);
-        // console.log(hook, 'prevNode', prevNode.value);
+        // console.log(hook, 'prevVnode', prevVnode.value);
 
         const hookArgs = [];
         vnode.value && hookArgs.push(vnode);
-        prevNode.value && hookArgs.push(prevNode);
+        prevVnode.value && hookArgs.push(prevVnode);
 
         hookFns[hook].forEach((fn) => fn(...hookArgs));
       });
@@ -66,14 +66,14 @@ export function createDirectiveScope() {
       el.value = args[0];
       Object.assign(binding, args[1]);
       vnode.value = args[2];
-      prevNode.value = args[3];
+      prevVnode.value = args[3];
 
       // console.log('created', 'vnode', vnode.value);
-      // console.log('created', 'prevNode', prevNode.value);
+      // console.log('created', 'prevVnode', prevVnode.value);
 
       scope = effectScope();
       scope.run(() =>
-        setupFn(el, binding, vnode, prevNode, {
+        setupFn(el, binding, vnode, prevVnode, {
           onBeforeMount: onBeforeDirectiveMount,
           onMounted: onDirectiveMounted,
           onBeforeUpdate: onBeforeDirectiveUpdate,
@@ -89,10 +89,10 @@ export function createDirectiveScope() {
     el.value = args[0];
     Object.assign(binding, args[1] || {});
     vnode.value = args[2];
-    prevNode.value = args[3];
+    prevVnode.value = args[3];
 
     // console.log('unmounted', 'vnode', vnode.value);
-    // console.log('unmounted', 'prevNode', prevNode.value);
+    // console.log('unmounted', 'prevVnode', prevVnode.value);
 
     createHook('unmounted')();
 

@@ -22,6 +22,7 @@ app.directive(
       onUnmounted,
     } = useDirectiveHooks();
 
+    // you get el, binding, vnode, prevVnode as args
     console.log('setup', JSON.parse(JSON.stringify(args)));
 
     // watch all hooks of the directive
@@ -42,6 +43,7 @@ app.directive(
     onBeforeUpdate(() => {
       foo.value = foo.value * 2;
     });
+
     // should be doubled
     watchEffect(() => console.log(foo.value));
 
