@@ -1,6 +1,6 @@
 <script setup>
-import ComponentControl from './ComponentControl.vue';
-import ComponentWithDirective from './ComponentWithDirective.vue';
+import ComponentControl from './components/ComponentControl.vue';
+import ComponentWithDirective from './components/ComponentWithDirective.vue';
 </script>
 
 <template>

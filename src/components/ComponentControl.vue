@@ -1,6 +1,6 @@
 <!--
   Component Control
-  This component provides buttons as well as slot props that make
+  This component is just a helper that provides buttons as well as slot props that make
   it possible to toggle v-if and v-show of some element inside the slot.
 -->
 
